@@ -33,6 +33,15 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
     }   
     
     public void start(){
+        grid.build(new Turret(new Vector(1, 1))); //add as a test
+        Turret upgradedTurret = new Turret(new Vector(5, 5));
+        upgradedTurret.setPictureFolders("src/Images/TurretLevel2/");
+        upgradedTurret.is_selected = true;
+        grid.build(upgradedTurret);
+
+
+
+
         while(true){
             update(1000.0/60);
             frame.repaint();
@@ -71,8 +80,8 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
                 Building building = grid.getTile(new Vector(i, j)).building;
                 if(building != null && building.position.equals(new Vector(i, j))){
                     Vector v = gridToWorld(new Vector(i, j));
-                    
-                    g.drawImage(building.image, v.x + building.offset.x, v.y + 32 - Tile.HEIGHT + building.offset.y, null); //the 30 is a counter offset
+                    building.update();
+                    building.draw(g, v);
                 }
             }          
         }
@@ -132,7 +141,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
 
         int w = Tile.WIDTH / 2;
         int h = Tile.HEIGHT / 2;
-        
+
         double x = 0.5 * (v.x * 1.0 / w - v.y * (1.0 / h));
         double y = 0.5 * (v.x * 1.0 / w + v.y * (1.0 / h));
 
@@ -171,14 +180,12 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
 
         // If preview mode is enabled, place a new arcade machine
         if (v.x >= 0 && v.y >= 0 && preview != null) {
-            grid.build(new LargerTile(v));
+            grid.build(new Turret(v));
             System.out.println(v);
         } else {
             // Check if the clicked tile contains an Arcade Machine
             Building clickedBuilding = grid.getTile(v).building;
-            //if (clickedBuilding instanceof buildingType) {
-                //do action of that building
-            //}
+            clickedBuilding.setIs_selected();
         }
     }
 
