@@ -25,7 +25,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
         frame.setVisible(true);
         frame.setSize(900, 900);
         frame.add(panel);
-        cameraPos = new Vector(0, 60);
+        cameraPos = new Vector(120, -250);
         cameraVelocity = new Vector(0, 0);
         
         panel.addMouseListener(this);
@@ -36,8 +36,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
     }   
     
     public void start(){
-        grid.build(new Cannon(new Vector(1, 1))); //add as a test
-        Cannon upgadedCannon = new Cannon(new Vector(5, 5));
+        Cannon upgadedCannon = new Cannon(new Vector(1, 1));
         upgadedCannon.setPictureFolders("src/Images/TurretLevel2/");
         upgadedCannon.is_selected = true;
         grid.build(upgadedCannon);
@@ -179,8 +178,10 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
         // Check if click was inside the build menu square
         if (x >= 50 && x <= 150 && y >= 50 && y <= 150) {
             if (preview == null) {
+                preview = new LargerTile(new Vector(0, 0));
                 System.out.println("Build enabled!");
-            } else {
+            }
+            else {
                 preview = null; // Disable preview
                 System.out.println("Build disabled!");
             }
