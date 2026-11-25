@@ -12,7 +12,7 @@ public abstract class Building {
     Vector offset;
     Vector position;
     Vector dimensions;
-    boolean is_selected = true; //change later
+    boolean is_selected = false; //change later
      
     public Building(Vector offset, Vector position, Vector dimensions){
         this.offset = offset;
@@ -31,6 +31,8 @@ public abstract class Building {
     public void draw(Graphics g, Vector v){
         g.drawImage(this.image, v.x + this.offset.x, v.y + 32 - Tile.HEIGHT + this.offset.y, null); //the 30 is a counter offset
     }
+
+    public abstract void draw_Exta(Graphics g, Vector v);
 
     public void setIs_selected(){
         is_selected = !is_selected;

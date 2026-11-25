@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-public class Turret extends Building implements Defense {
+public class Cannon extends Building implements Defense {
     public static final int FRAME_COUNT = 23; // 0001.png to 0023.png
     public static final double DEGREES_PER_FRAME = 360.0 / FRAME_COUNT;
     String pictureFolders = "src/Images/TurretLevel1/";
@@ -32,7 +32,7 @@ public class Turret extends Building implements Defense {
      *
      * @param position grid coordinate of the anchor tile
      */
-    public Turret(Vector position) {
+    public Cannon(Vector position) {
         super(offSet, position, dimensions);
     }
 
@@ -91,11 +91,6 @@ public class Turret extends Building implements Defense {
         }
     }
 
-
-
-    @Override
-    public void Idle() {}
-
     @Override
     public void update() {
         idleAnimation(10);
@@ -114,29 +109,18 @@ public class Turret extends Building implements Defense {
             g.setColor(Color.MAGENTA);
             g.fillRect(drawX, drawY, 64, 64);
         }
+    }
 
-        if (super.is_selected) {
-            double semiX = range * Math.sqrt(2) * Tile.WIDTH / 2.0;
-            double semiY = range * Math.sqrt(2) * Tile.HEIGHT / 2.0;
-
+    @Override
+    public void draw_Exta(Graphics g, Vector v) {
+        if(is_selected) {
+            double semiX = (double) 4.0F * Math.sqrt((double) 2.0F) * (double) 128.0F / (double) 2.0F;
+            double semiY = (double) 4.0F * Math.sqrt((double) 2.0F) * (double) 64.0F / (double) 2.0F;
             g.setColor(Color.BLACK);
-
-            GradientPaint gp = new GradientPaint(0, 0, Color.RED, 300, 300, Color.BLUE);
+            new GradientPaint(0.0F, 0.0F, Color.RED, 300.0F, 300.0F, Color.BLUE);
             g.setColor(Color.BLACK);
-            g.drawOval(
-                    (int) (v.x - semiX - (double) offset.x / 2),
-                    (int) (v.y - semiY),
-                    (int) (semiX * 2),
-                    (int) (semiY * 2)
-            );
-            g.fillOval(
-                    (int) (v.x - (double) offset.x / 2 - 15),
-                    (int) (v.y - 15),
-                    30,
-                    30
-            );
-
-            //game . draw oval there so overlay?
+            g.drawOval((int) ((double) v.x - semiX - (double) this.offset.x / (double) 2.0F), (int) ((double) v.y - semiY), (int) (semiX * (double) 2.0F), (int) (semiY * (double) 2.0F));
         }
+
     }
 }

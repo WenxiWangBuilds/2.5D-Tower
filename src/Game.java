@@ -10,6 +10,9 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
     Grid grid = new Grid(30);
     Vector mousePosition = new Vector(0, 0);
     Building preview = new LargerTile(new Vector(0, 0));
+
+    Boolean showingRadius = false;
+    int[] RadiusRing = {0, 0, 0, 0};
     
     public Game(){
         frame = new JFrame("Isometric");
@@ -33,11 +36,13 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
     }   
     
     public void start(){
-        grid.build(new Turret(new Vector(1, 1))); //add as a test
-        Turret upgradedTurret = new Turret(new Vector(5, 5));
-        upgradedTurret.setPictureFolders("src/Images/TurretLevel2/");
-        upgradedTurret.is_selected = true;
-        grid.build(upgradedTurret);
+        grid.build(new Cannon(new Vector(1, 1))); //add as a test
+        Cannon upgadedCannon = new Cannon(new Vector(5, 5));
+        upgadedCannon.setPictureFolders("src/Images/TurretLevel2/");
+        upgadedCannon.is_selected = true;
+        grid.build(upgadedCannon);
+
+        grid.build(new GoldMine(new Vector(7, 7)));
 
 
 
@@ -85,6 +90,15 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
                 }
             }          
         }
+        for(int i = grid.size-1; i>=0; i--){
+            for(int j = 0; j<grid.size; j++){
+                Building building = grid.getTile(new Vector(i, j)).building;
+                if(building != null && building.position.equals(new Vector(i, j))){
+                    Vector v = gridToWorld(new Vector(i, j));
+                    building.draw_Exta(g, v);
+                }
+            }
+        }
 
         g.setColor(Color.RED);
         g.fillRect(50, 50, 100, 100); // Positioned at (50,50), size 100x100
@@ -102,7 +116,6 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
         ((Graphics2D) g).setComposite(ac);
         Vector v = gridToWorld(worldToGrid(mousePosition)); //snap to grid
         g.drawImage(preview.image, v.x + preview.offset.x, v.y + 32 - Tile.HEIGHT + preview.offset.y, null);
-        
     }
 
 
@@ -180,7 +193,7 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
 
         // If preview mode is enabled, place a new arcade machine
         if (v.x >= 0 && v.y >= 0 && preview != null) {
-            grid.build(new Turret(v));
+            grid.build(new Cannon(v));
             System.out.println(v);
         } else {
             // Check if the clicked tile contains an Arcade Machine
@@ -189,6 +202,9 @@ public class Game implements KeyListener, MouseListener, MouseMotionListener{
         }
     }
 
+    public void changeRadius(int x, int y, int width, int height){
+        RadiusRing = new int[] {x, y, width, height};
+    }
 
 
 

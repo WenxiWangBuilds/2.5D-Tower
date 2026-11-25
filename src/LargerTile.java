@@ -9,5 +9,9 @@ public class LargerTile extends Building{
     }
 
     @Override
+    public void draw_Exta(Graphics g, Vector v) {
+    }
+
+    @Override
     public void update() {}
 }
